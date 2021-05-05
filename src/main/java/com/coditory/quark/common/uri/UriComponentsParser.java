@@ -41,14 +41,15 @@ class UriComponentsParser {
                     "(//(" + USERINFO_PATTERN + "@)?" + HOST_PATTERN + "(:" + PORT_PATTERN + ")?" + ")?" +
                     PATH_PATTERN + "(\\?" + QUERY_PATTERN + ")?" + "(#" + LAST_PATTERN + ")?");
 
-    public static UriComponents parseHttpUrl(String uri) {
+    static UriBuilder parseHttpUrl(String uri) {
         checkNotNull(uri, "uri");
         try {
-            UriComponents components = UriComponentsParser.parseUri(uri).build();
+            UriBuilder builder = UriComponentsParser.parseUri(uri);
+            UriComponents components = builder.build();
             if (!components.isHttpUrl()) {
                 throw new InvalidHttpUrlException("Invalid http url: \"" + uri + "\"");
             }
-            return components;
+            return builder;
         } catch (InvalidUriException e) {
             InvalidUriException root = Throwables.getRootCauseOfType(e, InvalidUriException.class);
             String suffix = Objects.mapNotNullOrDefault(root, (x) -> ". Cause: " + x.getMessage(), "");
@@ -58,7 +59,7 @@ class UriComponentsParser {
         }
     }
 
-    public static UriComponents parseHttpUrlOrNull(String uri) {
+    static UriBuilder parseHttpUrlOrNull(String uri) {
         checkNotNull(uri, "uri");
         UriBuilder builder = UriComponentsParser.parseUriOrNull(uri);
         if (builder == null) {
@@ -68,10 +69,10 @@ class UriComponentsParser {
         if (!components.isHttpUrl()) {
             return null;
         }
-        return components;
+        return builder;
     }
 
-    public static UriBuilder parseUri(String uri) {
+    static UriBuilder parseUri(String uri) {
         checkNotNull(uri, "uri");
         Matcher matcher = URI_PATTERN.matcher(uri);
         if (!matcher.matches()) {
@@ -86,7 +87,7 @@ class UriComponentsParser {
         }
     }
 
-    public static UriBuilder parseUriOrNull(String uri) {
+    static UriBuilder parseUriOrNull(String uri) {
         checkNotNull(uri, "uri");
         Matcher matcher = URI_PATTERN.matcher(uri);
         if (!matcher.matches()) {

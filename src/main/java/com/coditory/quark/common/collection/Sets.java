@@ -34,12 +34,22 @@ public final class Sets {
                 .collect(toUnmodifiableSet());
     }
 
+    public static boolean isNullOrEmpty(@Nullable Set<?> set) {
+        return set == null || set.isEmpty();
+    }
+
     public static boolean isNotEmpty(@Nullable Set<?> set) {
         return set != null && !set.isEmpty();
     }
 
     public static <T> Set<T> nullToEmpty(@Nullable Set<T> set) {
         return set == null ? Set.of() : set;
+    }
+
+    public static <T> Set<T> toSetOrEmpty(@Nullable T[] array) {
+        return array == null || array.length == 0
+                ? Set.of()
+                : Set.of(array);
     }
 
     @Nullable

@@ -1,11 +1,13 @@
 package com.coditory.quark.common.uri;
 
 import com.coditory.quark.common.collection.Lists;
-import com.coditory.quark.common.util.Strings;
 import com.coditory.quark.common.net.Ports;
+import com.coditory.quark.common.throwable.Throwables;
+import com.coditory.quark.common.util.Strings;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,11 +27,7 @@ import static com.coditory.quark.common.util.Strings.lowerCase;
 import static java.util.stream.Collectors.toList;
 
 public final class UriBuilder {
-    public static UriBuilder of(URI uri) {
-        return new UriBuilder().setUri(uri);
-    }
-
-    public static UriBuilder of(UriComponents uriComponents) {
+    static UriBuilder from(UriComponents uriComponents) {
         UriBuilder builder = new UriBuilder();
         builder.scheme = uriComponents.getScheme();
         builder.ssp = uriComponents.getSchemeSpecificPart();
@@ -46,32 +44,21 @@ public final class UriBuilder {
         return builder;
     }
 
-    public static UriBuilder parseUri(String uri) {
-        UriComponents components = UriComponents.parseUri(uri);
-        return of(components);
+    static UriBuilder from(URI uri) {
+        return new UriBuilder().setUri(uri);
     }
 
-    @Nullable
-    public static UriBuilder parseUriOrNull(String uri) {
-        try {
-            return parseUri(uri);
-        } catch (Exception e) {
-            return null;
-        }
+    static UriBuilder from(URL url) {
+        URI uri = Throwables.sneakyThrow(url::toURI);
+        return new UriBuilder().setUri(uri);
     }
 
-    public static UriBuilder parseHttpUrl(String uri) {
-        UriComponents components = UriComponents.parseHttpUrl(uri);
-        return of(components);
+    static UriBuilder fromUri(String uri) {
+        return UriComponentsParser.parseUri(uri);
     }
 
-    @Nullable
-    public static UriBuilder parseHttpUrlOrNull(String uri) {
-        try {
-            return parseHttpUrl(uri);
-        } catch (Exception e) {
-            return null;
-        }
+    public static UriBuilder fromHttpUrl(String url) {
+        return UriComponentsParser.parseHttpUrl(url);
     }
 
     private String scheme;
@@ -85,9 +72,7 @@ public final class UriBuilder {
     private final Map<String, List<String>> queryParams = new HashMap<>();
     private String fragment;
 
-    public UriBuilder() {
-
-    }
+    UriBuilder() { }
 
     public UriBuilder setUri(URI uri) {
         checkNotNull(uri, "URI must not be null");
@@ -121,7 +106,7 @@ public final class UriBuilder {
     }
 
     public UriBuilder copy() {
-        return of(build());
+        return from(build());
     }
 
     public UriComponents build() {

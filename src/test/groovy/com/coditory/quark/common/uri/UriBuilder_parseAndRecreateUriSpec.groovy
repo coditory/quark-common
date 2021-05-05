@@ -7,7 +7,7 @@ class UriBuilder_parseAndRecreateUriSpec extends Specification {
     @Unroll
     def "should parse and recreate uri: #uri"() {
         when:
-            UriBuilder result = UriBuilder.parseUri(uri)
+            UriBuilder result = UriBuilder.fromUri(uri)
         then:
             expectEquals(result, uri)
         where:
@@ -35,7 +35,7 @@ class UriBuilder_parseAndRecreateUriSpec extends Specification {
     @Unroll
     def "should normalize path: #uri"() {
         when:
-            UriBuilder result = UriBuilder.parseUri(uri)
+            UriBuilder result = UriBuilder.fromUri(uri)
         then:
             result.toUriString() == expected
         where:
@@ -48,7 +48,7 @@ class UriBuilder_parseAndRecreateUriSpec extends Specification {
     @Unroll
     def "should handle plus sign: #uri"() {
         when:
-            UriBuilder result = UriBuilder.parseUri(uri)
+            UriBuilder result = UriBuilder.fromUri(uri)
         then:
             result.toUriString() == expected
         where:
@@ -63,7 +63,7 @@ class UriBuilder_parseAndRecreateUriSpec extends Specification {
     @Unroll
     def "should parse and recreate opaque uri: #uri"() {
         when:
-            UriBuilder result = UriBuilder.parseUri(uri)
+            UriBuilder result = UriBuilder.fromUri(uri)
         then:
             expectEquals(result, uri)
         where:

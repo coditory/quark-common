@@ -2,6 +2,7 @@ package com.coditory.quark.common.uri;
 
 import com.coditory.quark.common.collection.Lists;
 import com.coditory.quark.common.collection.Maps;
+import com.coditory.quark.common.throwable.Throwables;
 import com.coditory.quark.common.util.Objects;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,9 +11,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import static com.coditory.quark.common.util.Strings.isNullOrEmpty;
-import static com.coditory.quark.common.util.Strings.isNotEmpty;
 import static com.coditory.quark.common.check.Args.checkNotBlank;
+import static com.coditory.quark.common.check.Args.checkNotNull;
 import static com.coditory.quark.common.uri.UriPartValidator.checkPort;
 import static com.coditory.quark.common.uri.UriRfc.FRAGMENT;
 import static com.coditory.quark.common.uri.UriRfc.PATH_SEGMENT;
@@ -20,37 +20,73 @@ import static com.coditory.quark.common.uri.UriRfc.QUERY_PARAM;
 import static com.coditory.quark.common.uri.UriRfc.SCHEME;
 import static com.coditory.quark.common.uri.UriRfc.SCHEME_SPECIFIC_PART;
 import static com.coditory.quark.common.uri.UriRfc.USER_INFO;
+import static com.coditory.quark.common.util.Strings.isNotEmpty;
+import static com.coditory.quark.common.util.Strings.isNullOrEmpty;
 import static java.util.stream.Collectors.joining;
 
 public final class UriComponents {
-    public static UriComponents parseUri(String uri) {
-        return UriComponentsParser.parseUri(uri)
-                .build();
+    public static UriComponents fromUri(String uri) {
+        checkNotNull(uri, "uri");
+        return builderFromUri(uri).build();
     }
 
     @Nullable
-    public static UriComponents parseUriOrNull(String uri) {
-        try {
-            return parseUri(uri);
-        } catch (Exception e) {
-            return null;
-        }
+    public static UriComponents fromUriOrNull(String uri) {
+        checkNotNull(uri, "uri");
+        return Throwables.onErrorNull(() -> fromUri(uri));
     }
 
-    public static UriComponents parseHttpUrl(String url) {
-        return UriComponentsParser.parseHttpUrl(url);
+    public static UriComponents fromHttpUrl(String url) {
+        checkNotNull(url, "url");
+        return builderFromHttpUrl(url).build();
     }
 
     @Nullable
-    public static UriComponents parseHttpUrlOrNull(String url) {
-        try {
-            return parseHttpUrl(url);
-        } catch (Exception e) {
-             return null;
-        }
+    public static UriComponents fromHttpUrlOrNull(String url) {
+        checkNotNull(url, "url");
+        return Throwables.onErrorNull(() -> fromHttpUrl(url));
     }
 
-    public static UriComponents buildOpaque(
+    public static UriComponents from(URI uri) {
+        checkNotNull(uri, "uri");
+        return builderFrom(uri).build();
+    }
+
+    public static UriComponents from(URL url) {
+        checkNotNull(url, "url");
+        return builderFrom(url).build();
+    }
+
+    public static UriBuilder builder() {
+        return new UriBuilder();
+    }
+
+    public static UriBuilder builderFrom(UriComponents uriComponents) {
+        checkNotNull(uriComponents, "uriComponents");
+        return UriBuilder.from(uriComponents);
+    }
+
+    public static UriBuilder builderFrom(URL url) {
+        checkNotNull(url, "url");
+        return UriBuilder.from(url);
+    }
+
+    public static UriBuilder builderFrom(URI uri) {
+        checkNotNull(uri, "uri");
+        return UriBuilder.from(uri);
+    }
+
+    public static UriBuilder builderFromUri(String uri) {
+        checkNotNull(uri, "uri");
+        return UriBuilder.fromUri(uri);
+    }
+
+    public static UriBuilder builderFromHttpUrl(String url) {
+        checkNotNull(url, "url");
+        return UriBuilder.fromHttpUrl(url);
+    }
+
+    static UriComponents buildOpaque(
             String scheme,
             String ssp,
             @Nullable String fragment
@@ -60,7 +96,7 @@ public final class UriComponents {
         return new UriComponents(scheme, ssp, null, null, -1, false, false, null, null, fragment);
     }
 
-    public static UriComponents buildHierarchical(
+    static UriComponents buildHierarchical(
             @Nullable String scheme,
             @Nullable String userInfo,
             @Nullable String host,
@@ -180,7 +216,7 @@ public final class UriComponents {
         }
         StringBuilder queryBuilder = new StringBuilder();
         this.queryParams.forEach((name, values) -> {
-            if (Lists.isEmpty(values)) {
+            if (Lists.isNullOrEmpty(values)) {
                 if (queryBuilder.length() != 0) {
                     queryBuilder.append('&');
                 }

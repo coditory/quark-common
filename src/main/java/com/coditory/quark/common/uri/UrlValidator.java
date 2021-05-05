@@ -55,8 +55,7 @@ public final class UrlValidator {
         checkNotNull(url, "url");
         UriComponents uriComponents;
         try {
-            uriComponents = UriBuilder.parseUri(url)
-                    .build();
+            uriComponents = UriComponents.fromHttpUrl(url);
         } catch (Exception e) {
             return false;
         }

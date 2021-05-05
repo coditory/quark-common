@@ -25,7 +25,7 @@ class UriBuilderSpec extends Specification {
 
     def "should normalize path slashes"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com/abc//def/")
+            String result = UriBuilder.fromUri("https://coditory.com/abc//def/")
                     .addSubPath("//ghi////jkl//")
                     .addPathSegment("mno/pqr")
                     .toUriString()
@@ -35,7 +35,7 @@ class UriBuilderSpec extends Specification {
 
     def "should encode spaces"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com/a+bc//d%20ef/")
+            String result = UriBuilder.fromUri("https://coditory.com/a+bc//d%20ef/")
                     .addPathSegment("x y ")
                     .setFragment("frag ment")
                     .addQueryParam("f oo", "b ar")
@@ -47,7 +47,7 @@ class UriBuilderSpec extends Specification {
 
     def "should replace each uri component"() {
         when:
-            String result = UriBuilder.parseUri("https://john.doe@coditory.com:8081/test/test2/test3?a=a1&a=a2&b=b2#x")
+            String result = UriBuilder.fromUri("https://john.doe@coditory.com:8081/test/test2/test3?a=a1&a=a2&b=b2#x")
                     .setScheme("http")
                     .removeUserInfo()
                     .setHost("coditory.xyz")
@@ -63,7 +63,7 @@ class UriBuilderSpec extends Specification {
     @Unroll
     def "should build uri without #field"() {
         given:
-            UriBuilder builder = UriBuilder.parseUri("https://john.doe@coditory.com:8081/test/test2/test3?a=a1&a=a2&b=b2#x")
+            UriBuilder builder = UriBuilder.fromUri("https://john.doe@coditory.com:8081/test/test2/test3?a=a1&a=a2&b=b2#x")
         when:
             modifier(builder)
         then:
@@ -82,14 +82,14 @@ class UriBuilderSpec extends Specification {
     @Unroll
     def "should throw error when building uri without host but with scheme and port or userinfo"() {
         when:
-            UriBuilder.parseUri("https://john.doe@coditory.com/test/test2/test3?a=a1&a=a2&b=b2#x")
+            UriBuilder.fromUri("https://john.doe@coditory.com/test/test2/test3?a=a1&a=a2&b=b2#x")
                     .removeHost()
                     .build()
         then:
             InvalidUriException e = thrown(InvalidUriException)
             e.message == "URI with user info must include host"
         when:
-            UriBuilder.parseUri("https://coditory.com:8008/test/test2/test3?a=a1&a=a2&b=b2#x")
+            UriBuilder.fromUri("https://coditory.com:8008/test/test2/test3?a=a1&a=a2&b=b2#x")
                     .removeHost()
                     .build()
         then:
@@ -99,7 +99,7 @@ class UriBuilderSpec extends Specification {
 
     def "should copy uriBuilder instance"() {
         when:
-            UriBuilder first = UriBuilder.parseUri("https://coditory.com/abc")
+            UriBuilder first = UriBuilder.fromUri("https://coditory.com/abc")
             UriBuilder second = first.copy().addQueryParam("a", "X")
         then:
             first.toUriString() == "https://coditory.com/abc"

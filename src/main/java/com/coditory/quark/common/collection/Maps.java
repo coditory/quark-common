@@ -6,14 +6,12 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static com.coditory.quark.common.check.Args.checkNotNull;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toUnmodifiableMap;
-import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public final class Maps {
     private Maps() {
@@ -29,6 +27,14 @@ public final class Maps {
             }
         }
         return unmodifiableMap(result);
+    }
+
+    public static boolean isNullOrEmpty(Map<?, ?> map) {
+        return map == null || map.isEmpty();
+    }
+
+    public static boolean isNotEmpty(Map<?, ?> map) {
+        return map != null && !map.isEmpty();
     }
 
     public static <K, V> Map<K, V> nullToEmpty(@Nullable Map<K, V> map) {

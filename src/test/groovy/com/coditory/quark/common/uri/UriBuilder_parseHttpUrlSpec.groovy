@@ -7,7 +7,7 @@ class UriBuilder_parseHttpUrlSpec extends Specification {
     @Unroll
     def "should create URL from valid http url: #input"() {
         when:
-            UriComponents result = UriBuilder.parseUri(input).build()
+            UriComponents result = UriBuilder.fromUri(input).build()
         then:
             result.isValidHttpUrl() == true
         and:
@@ -24,7 +24,7 @@ class UriBuilder_parseHttpUrlSpec extends Specification {
     @Unroll
     def "should detect invalid http url: #input"() {
         when:
-            UriComponents result = UriBuilder.parseUri(input).build()
+            UriComponents result = UriBuilder.fromUri(input).build()
         then:
             result.isValidHttpUrl() == false
         where:

@@ -5,7 +5,7 @@ import spock.lang.Specification
 class UriBuilder_queryParamsSpec extends Specification {
     def "should add query params with addQueryParam"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?w=W&a=A")
+            String result = UriBuilder.fromUri("https://coditory.com?w=W&a=A")
                     .addQueryParam("a", "X")
                     .addQueryParam("a", "X")
                     .addQueryParam("a", "Y")
@@ -18,7 +18,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should add query params with addQueryMultiParams"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?w=W&a=A")
+            String result = UriBuilder.fromUri("https://coditory.com?w=W&a=A")
                     .addQueryMultiParams([
                             a : ["X", "X", "Y"],
                             b : ["Y"],
@@ -32,7 +32,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should add query params with addQueryParams"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?w=W&a=A")
+            String result = UriBuilder.fromUri("https://coditory.com?w=W&a=A")
                     .addQueryParams([
                             a: "X",
                             b: "Y",
@@ -45,7 +45,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should add query params with putQueryParam"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?w=W&a=A")
+            String result = UriBuilder.fromUri("https://coditory.com?w=W&a=A")
                     .putQueryParam("a", "X")
                     .putQueryParam("a", "X")
                     .putQueryParam("a", "Y")
@@ -58,7 +58,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should add query params with putQueryMultiParams"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?w=W&a=A")
+            String result = UriBuilder.fromUri("https://coditory.com?w=W&a=A")
                     .putQueryMultiParams([
                             a : ["X", "X", "Y"],
                             b : ["Y"],
@@ -72,7 +72,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should add query params with putQueryParams"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?w=W&a=A")
+            String result = UriBuilder.fromUri("https://coditory.com?w=W&a=A")
                     .putQueryParams([
                             a: "X",
                             b: "Y",
@@ -85,7 +85,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should remove query param by name"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?a=X&a=Y&b=Z")
+            String result = UriBuilder.fromUri("https://coditory.com?a=X&a=Y&b=Z")
                     .removeQueryParam("a")
                     .toUriString()
         then:
@@ -94,7 +94,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should remove query param by name and value"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?a=X&a=Y&b=Z")
+            String result = UriBuilder.fromUri("https://coditory.com?a=X&a=Y&b=Z")
                     .removeQueryParam("a", "Y")
                     .toUriString()
         then:
@@ -103,7 +103,7 @@ class UriBuilder_queryParamsSpec extends Specification {
 
     def "should remove all query params"() {
         when:
-            String result = UriBuilder.parseUri("https://coditory.com?a=X&a=Y&b=Z")
+            String result = UriBuilder.fromUri("https://coditory.com?a=X&a=Y&b=Z")
                     .removeQueryParams()
                     .toUriString()
         then:

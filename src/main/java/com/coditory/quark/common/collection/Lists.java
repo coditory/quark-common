@@ -52,12 +52,18 @@ public final class Lists {
         return list == null || list.isEmpty() ? null : list;
     }
 
-    public static boolean isEmpty(@Nullable List<?> list) {
+    public static boolean isNullOrEmpty(@Nullable List<?> list) {
         return list == null || list.isEmpty();
     }
 
     public static boolean isNotEmpty(@Nullable List<?> list) {
         return list != null && !list.isEmpty();
+    }
+
+    public static <T> List<T> toListOrEmpty(@Nullable T[] array) {
+        return array == null || array.length == 0
+                ? List.of()
+                : List.of(array);
     }
 
     @Nullable

@@ -5,7 +5,7 @@ import spock.lang.Specification
 class UriBuilder_parseUriSpec extends Specification {
     def "should parse UriComponents from complex http url"() {
         when:
-            UriComponents result = UriComponents.parseUri("https://john:doe@coditory.com:8080/help/test?a=a1&a=a2&b=b1#frag")
+            UriComponents result = UriComponents.fromUri("https://john:doe@coditory.com:8080/help/test?a=a1&a=a2&b=b1#frag")
         then:
             result.schemeSpecificPart == null
             result.opaque == false
@@ -30,7 +30,7 @@ class UriBuilder_parseUriSpec extends Specification {
     def "should parse UriComponents from basic http url"() {
         when:
             UriComponents result = UriBuilder
-                    .parseUri("http://coditory.com/help/test?a=a1&a=a2&b=b1#frag")
+                    .fromUri("http://coditory.com/help/test?a=a1&a=a2&b=b1#frag")
                     .build()
         then:
             result.schemeSpecificPart == null
@@ -55,7 +55,7 @@ class UriBuilder_parseUriSpec extends Specification {
     def "should parse UriComponents from uri starting with path"() {
         when:
             UriComponents result = UriBuilder
-                    .parseUri("/help/test?a=a1&a=a2&b=b1#frag")
+                    .fromUri("/help/test?a=a1&a=a2&b=b1#frag")
                     .build()
         then:
             result.schemeSpecificPart == null
@@ -80,7 +80,7 @@ class UriBuilder_parseUriSpec extends Specification {
     def "should parse UriComponents from uri with scheme and host only"() {
         when:
             UriComponents result = UriBuilder
-                    .parseUri("https://coditory.com")
+                    .fromUri("https://coditory.com")
                     .build()
         then:
             result.schemeSpecificPart == null
@@ -102,7 +102,7 @@ class UriBuilder_parseUriSpec extends Specification {
     def "should parse UriComponents from opaque uri"() {
         when:
             UriComponents result = UriBuilder
-                    .parseUri("mailto:%E8%AA%9Edef@yoursite.com?subject=Mail%20from%20Our%20Site#frag%E8%AA%9E")
+                    .fromUri("mailto:%E8%AA%9Edef@yoursite.com?subject=Mail%20from%20Our%20Site#frag%E8%AA%9E")
                     .build()
         then:
             result.schemeSpecificPart == "語def@yoursite.com?subject=Mail from Our Site"

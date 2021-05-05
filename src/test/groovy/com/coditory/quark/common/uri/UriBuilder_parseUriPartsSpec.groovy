@@ -7,7 +7,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
     @Unroll
     def "should parse scheme and host: #input"() {
         when:
-            UriComponents result = UriComponents.parseUri(input)
+            UriComponents result = UriComponents.fromUri(input)
         then:
             result.scheme == expected
         and:
@@ -22,7 +22,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
 
     def "should handle plus sign"() {
         when:
-            UriComponents result = UriComponents.parseUri("https://coditory.com/foo+bar?a+b=c+d#x+y")
+            UriComponents result = UriComponents.fromUri("https://coditory.com/foo+bar?a+b=c+d#x+y")
         then:
             result.pathSegments == ["foo+bar"]
             result.queryParams == ["a b": ["c d"]]
@@ -31,7 +31,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
 
     def "should parse protocol relative uri"() {
         when:
-            UriComponents result = UriComponents.parseUri("//coditory.com")
+            UriComponents result = UriComponents.fromUri("//coditory.com")
         then:
             result.protocolRelative == true
             result.scheme == null
@@ -42,7 +42,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
     @Unroll
     def "should parse user info: #input"() {
         when:
-            UriComponents result = UriComponents.parseUri(input)
+            UriComponents result = UriComponents.fromUri(input)
         then:
             result.userInfo == expected
         where:
@@ -54,7 +54,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
     @Unroll
     def "should parse path segments: #input"() {
         when:
-            UriComponents result = UriComponents.parseUri(input)
+            UriComponents result = UriComponents.fromUri(input)
         then:
             result.pathSegments == expected
         and:
@@ -76,7 +76,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
     @Unroll
     def "should parse query params: #query"() {
         when:
-            UriComponents result = UriComponents.parseUri("https://coditory.com" + query)
+            UriComponents result = UriComponents.fromUri("https://coditory.com" + query)
         then:
             result.queryParams == expected
 
@@ -102,7 +102,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
     @Unroll
     def "should parse fragment: #fragment"() {
         when:
-            UriComponents result = UriComponents.parseUri("https://coditory.com" + fragment)
+            UriComponents result = UriComponents.fromUri("https://coditory.com" + fragment)
         then:
             result.fragment == expected
 
@@ -118,7 +118,7 @@ class UriBuilder_parseUriPartsSpec extends Specification {
     @Unroll
     def "should throw error when parsing invalid uri string: #uri"() {
         when:
-            UriBuilder.parseUri(uri)
+            UriBuilder.fromUri(uri)
         then:
             InvalidUriException e = thrown(InvalidUriException)
             e.message == "Could not parse uri: \"$uri\". Cause: $message"
