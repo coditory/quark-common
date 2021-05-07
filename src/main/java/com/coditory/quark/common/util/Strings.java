@@ -35,7 +35,7 @@ public class Strings {
         return quote(text, '"');
     }
 
-    public static String quoteSingle(String text) {
+    public static String singleQuote(String text) {
         return quote(text, '\'');
     }
 
@@ -50,6 +50,10 @@ public class Strings {
 
     public static boolean isSingleQuoted(String text) {
         return isQuoted(text, '\'');
+    }
+
+    public static boolean isAnyQuoted(String text) {
+        return isQuoted(text) || isSingleQuoted(text);
     }
 
     public static boolean isQuoted(String text, char quote) {
@@ -80,6 +84,13 @@ public class Strings {
         return unquote(text, '"');
     }
 
+    public static String unquoteAny(String text) {
+        if (isQuoted(text, '"')) {
+            return unquote(text);
+        }
+        return unquoteSingle(text);
+    }
+
     public static String unquoteSingle(String text) {
         return unquote(text, '\'');
     }
@@ -104,7 +115,7 @@ public class Strings {
     public static String unescapeQuotations(String text, char quote) {
         checkNotNull(text, "text");
         String escapedQuote = "\\" + quote;
-        return text.indexOf(escapedQuote) == -1
+        return !text.contains(escapedQuote)
                 ? text
                 : replace(text, escapedQuote, "" + quote);
     }
@@ -787,6 +798,32 @@ public class Strings {
             padding[i] = padChars[i % padLen];
         }
         return new String(padding).concat(text);
+    }
+
+    public static boolean isWrapped(String text, char c) {
+        checkNotNull(text, "text");
+        return text.length() >= 2
+                && text.charAt(0) == c
+                && text.charAt(text.length() - 1) == c;
+    }
+
+    public static String unwrap(String text, char c) {
+        checkNotNull(text, "text");
+        return isWrapped(text, c)
+                ? text.substring(1, text.length() - 1)
+                : text;
+    }
+
+    public static String wrap(String text, char c) {
+        checkNotNull(text, "text");
+        return c + text + c;
+    }
+
+    public static String wrapNonEmpty(String text, char c) {
+        checkNotNull(text, "text");
+        return text.isEmpty()
+                ? text
+                : c + text + c;
     }
 
     public static String repeat(char ch, int count) {

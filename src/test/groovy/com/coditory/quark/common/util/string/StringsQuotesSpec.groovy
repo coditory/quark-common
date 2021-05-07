@@ -7,7 +7,7 @@ import spock.lang.Unroll
 import static com.coditory.quark.common.util.Strings.isQuoted
 import static com.coditory.quark.common.util.Strings.isSingleQuoted
 import static com.coditory.quark.common.util.Strings.quote
-import static com.coditory.quark.common.util.Strings.quoteSingle
+import static com.coditory.quark.common.util.Strings.singleQuote
 import static com.coditory.quark.common.util.Strings.unquote
 import static com.coditory.quark.common.util.Strings.unquoteSingle
 
@@ -43,7 +43,7 @@ class StringsQuotesSpec extends Specification {
     @Unroll
     def "quoteSingle(#value) == #expected"() {
         expect:
-            quoteSingle(value) == expected
+            singleQuote(value) == expected
         where:
             value          || expected
             ""             || "''"
