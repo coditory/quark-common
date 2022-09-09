@@ -1,6 +1,6 @@
 # Quark Common
 
-[![Build Status](https://github.com/coditory/quark-common/workflows/Build/badge.svg)](https://github.com/coditory/quark-common/actions?query=workflow%3ABuild)
+[![Build](https://github.com/coditory/quark-common/actions/workflows/build.yml/badge.svg)](https://github.com/coditory/quark-common/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/coditory/quark-common/badge.svg)](https://coveralls.io/github/coditory/quark-common)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.coditory.quark/quark-common/badge.svg)](https://mvnrepository.com/artifact/com.coditory.quark/quark-common)
 
