@@ -72,12 +72,12 @@ public final class Hosts {
 
         private final String name;
         private final ThrowingSupplier<String> jvmSupplier;
-        private final String systemCommand;
+        private final String[] systemCommand;
 
         ResolverWithOsCommandFallback(String name, ThrowingSupplier<String> jvmSupplier, String systemCommand) {
             this.name = requireNonNull(name);
             this.jvmSupplier = requireNonNull(jvmSupplier);
-            this.systemCommand = requireNonNull(systemCommand);
+            this.systemCommand = systemCommand.split(" ");
         }
 
         String resolve() {
@@ -106,8 +106,9 @@ public final class Hosts {
                 }
                 return builder.toString().trim();
             } catch (IOException exception) {
+                String cmd = String.join(" ", systemCommand);
                 throw new RuntimeException(
-                        "Could not resolve " + name + ". Your OS does not support command: " + systemCommand,
+                        "Could not resolve " + name + ". Your OS does not support command: " + cmd,
                         exception
                 );
             }
