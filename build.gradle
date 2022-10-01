@@ -13,7 +13,7 @@ description = 'Coditory common library'
 
 dependencies {
     api 'org.jetbrains:annotations:23.0.0'
-    testImplementation 'org.spockframework:spock-core:2.2-groovy-4.0'
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
 
 if (project.hasProperty('publish')) {
