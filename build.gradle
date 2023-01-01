@@ -12,7 +12,7 @@ group = 'com.coditory.quark'
 description = 'Coditory common library'
 
 dependencies {
-    api 'org.jetbrains:annotations:23.0.0'
+    api 'org.jetbrains:annotations:23.1.0'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
 
